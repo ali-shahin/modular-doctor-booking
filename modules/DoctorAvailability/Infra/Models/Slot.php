@@ -4,9 +4,12 @@ namespace Modules\DoctorAvailability\Infra\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class Slot extends Model
 {
+    use HasUuids;
+
     protected $table = 'slots';
     public $incrementing = false;
     public $timestamps = true;

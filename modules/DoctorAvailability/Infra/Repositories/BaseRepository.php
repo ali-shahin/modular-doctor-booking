@@ -16,44 +16,35 @@ class BaseRepository implements RepositoryInterface
         return $collection->get();
     }
 
-    public function find($id, ?array $relations = []): ?Model
+    public function find($id, $relations = []): ?Model
     {
-        if ($relations) {
-            return $this->model->with($relations)->find($id);
-        }
-
-        return $this->model->find($id);
+        return $this->model->with($relations)->find($id);
     }
 
     public function findBy(array $criteria, ?string $orderColumn = 'id',  ?string $orderDirection = 'DESC'): Collection
     {
-        $collection = $this->model;
-
-        foreach ($criteria as $field => $value) {
-            $collection = $collection->where($field, $value);
-        }
-
-        $collection = $collection->orderBy($orderColumn, $orderDirection);
-
-        return $collection->get();
+        return $this->model
+            ->where($criteria)
+            ->orderBy($orderColumn, $orderDirection)
+            ->get();
     }
 
-    public function create(array $data): Model
+    public function create(array $data): ?Model
     {
-        foreach ($data as $field => $val) {
-            $this->model->{$field} = $val;
-        }
-
-        if ($this->model->save()) {
-            return $this->model;
+        $model = clone $this->model;
+        if ($model->fill($data)->save()) {
+            return $model;
         }
 
         return null;
     }
 
-    public function update(array $data): Model
+    public function update(array $data): ?Model
     {
-        $model = $this->find($data['id'] ?? 0);
+        if (!isset($data['id'])) {
+            return null;
+        }
+        $model = $this->find($data['id']);
 
         if ($model) {
             foreach ($data as $field => $val) {

@@ -3,7 +3,6 @@
 namespace Modules\DoctorAvailability\Controllers;
 
 use Modules\DoctorAvailability\Services\DoctorService;
-use Modules\DoctorAvailability\Services\SlotService;
 use Modules\DoctorAvailability\Infra\Models\Doctor;
 use Modules\DoctorAvailability\Infra\Models\Slot;
 use Illuminate\Database\Eloquent\Collection;
@@ -11,38 +10,37 @@ use Illuminate\Http\Request;
 
 class DoctorController
 {
-    public function __construct(private DoctorService $doctorService, private SlotService $slotService) {}
+    public function __construct(
+        private DoctorService $doctorService,
+    ) {}
 
     public function index(): Collection
     {
-        // return all doctors
-        $doctors = $this->doctorService->getAllDoctors();
-        return $doctors;
+        return $this->doctorService->getAllDoctors();
     }
 
     public function show(string $id): ?Doctor
     {
-        // return the doctor details with his slots.
-        $doctor = $this->doctorService->getDoctor($id, ['slots']);
-        return $doctor;
+        return $this->doctorService->getDoctor($id, ['slots']);
     }
 
-    public function addSlot(Request $request): Slot
+    public function slots(string $id): Collection
     {
-        // add a slot to the doctor
+        return $this->doctorService->getDoctor($id)->slots;
+    }
+
+    public function addSlot(Request $request, string $id)
+    {
         $validated = $request->validate([
-            'doctor_id' => 'required',
-            'time' => 'required|datetime',
+            'time' => 'required|date_format:Y-m-d H:i:s',
             'cost' => 'required|numeric',
         ]);
-        $slot = $this->slotService->addSlot($validated);
-        return $slot;
+
+        return $this->doctorService->addSlot($id, $validated);
     }
 
-    public function getAvailableSlots(string $doctorId): Collection
+    public function availableSlots(string $id): Collection
     {
-        // return the available slots for the doctor
-        $availableSlots = $this->slotService->getAvailableSlots($doctorId);
-        return $availableSlots;
+        return $this->doctorService->getAvailableSlots($id);
     }
 }
