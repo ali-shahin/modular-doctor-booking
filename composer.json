@@ -26,11 +26,9 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
-            "AppointmentBooking\\": "app/Modules/AppointmentBooking/",
-            "AppointmentConfirmation\\": "app/Modules/AppointmentConfirmation/",
-            "AppointmentManagement\\": "app/Modules/AppointmentManagement/",
-            "Authentication\\": "app/Modules/Authentication/",
-            "DoctorAvailability\\": "app/Modules/DoctorAvailability/"
+            "Modules\\": "modules/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
         }
     },
     "autoload-dev": {
