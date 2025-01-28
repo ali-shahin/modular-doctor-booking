@@ -2,12 +2,12 @@
 
 namespace Modules\AppointmentBooking\Entities;
 
-use Ramsey\Uuid\Guid\Guid;
+use Ramsey\Uuid\Uuid;
 
 class Slot
 {
-    public Guid $id;
-    public Guid $doctor_id;
+    public Uuid $id;
+    public Uuid $doctor_id;
     public string $time;
     public bool $is_reserved; // default false
 }

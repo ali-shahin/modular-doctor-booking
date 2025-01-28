@@ -2,11 +2,11 @@
 
 namespace Modules\AppointmentBooking\Entities;
 
-use Ramsey\Uuid\Guid\Guid;
+use Ramsey\Uuid\Uuid;
 
 class Patient
 {
-    public Guid $id;
+    public Uuid $id;
     public string $name;
     public string $email;
 }

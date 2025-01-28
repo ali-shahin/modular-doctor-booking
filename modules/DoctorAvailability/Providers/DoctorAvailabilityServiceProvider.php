@@ -2,8 +2,9 @@
 
 namespace Modules\DoctorAvailability\Providers;
 
-use Modules\DoctorAvailability\Services\DoctorService;
 use Illuminate\Support\ServiceProvider;
+use Modules\DoctorAvailability\Contracts\SlotServiceContract;
+use Modules\DoctorAvailability\Services\SlotService;
 
 class DoctorAvailabilityServiceProvider extends ServiceProvider
 {
@@ -11,15 +12,14 @@ class DoctorAvailabilityServiceProvider extends ServiceProvider
     {
         $this->loadRoutesFrom(__DIR__ . '/../routes.php');
         $this->loadMigrationsFrom(__DIR__ . '/../Infra/database/migrations');
-
-        // register the seeder
-        $this->publishes([
-            __DIR__ . '/../Infra/database/seeders' => database_path('seeders'),
-        ], 'seeders');
     }
 
     public function register(): void
     {
-        // $this->app->bind(DoctorService::class, DoctorService::class);
+        // this is where we bind the SlotServiceContract to the SlotService, so that we can inject the SlotServiceContract in other classes
+        $this->app->bind(
+            SlotServiceContract::class,
+            SlotService::class
+        );
     }
 }

@@ -31,7 +31,8 @@ class AppointmentController extends Controller
         // book an appointment
         $appointment = $this->bookAppointmentUseCase->execute(
             $request->input('patient_id'),
-            $request->input('slot_id')
+            $request->input('slot_id'),
+            $request->input('patient_name')
         );
         return response()->json($appointment);
     }

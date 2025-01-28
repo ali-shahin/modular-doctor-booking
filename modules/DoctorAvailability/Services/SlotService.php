@@ -5,22 +5,22 @@ namespace Modules\DoctorAvailability\Services;
 use Modules\DoctorAvailability\Infra\Models\Slot;
 use Modules\DoctorAvailability\Infra\Repositories\SlotRepository;
 use Illuminate\Database\Eloquent\Collection;
+use Modules\DoctorAvailability\Contracts\SlotServiceContract;
 
-class SlotService
+class SlotService implements SlotServiceContract
 {
     public function __construct(private SlotRepository $slotRepository) {}
+
+    public function getAvailableSlots(): Collection
+    {
+        return $this->slotRepository->findBy([
+            'is_reserved' => false
+        ]);
+    }
 
     public function getAllSlots(): Collection
     {
         return $this->slotRepository->all();
-    }
-
-    public function getAvailableSlots(string $doctorId): Collection
-    {
-        return $this->slotRepository->findBy([
-            'doctor_id' => $doctorId,
-            'is_reserved' => false
-        ]);
     }
 
     public function addSlot(array $data): Slot
