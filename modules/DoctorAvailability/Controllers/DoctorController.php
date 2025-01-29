@@ -4,7 +4,6 @@ namespace Modules\DoctorAvailability\Controllers;
 
 use Modules\DoctorAvailability\Services\DoctorService;
 use Modules\DoctorAvailability\Infra\Models\Doctor;
-use Modules\DoctorAvailability\Infra\Models\Slot;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 

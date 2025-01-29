@@ -5,6 +5,7 @@ return [
         'AppointmentManagement',
         'DoctorAvailability',
         'AppointmentBooking',
+        'AppointmentConfirmation',
         'Authentication',
     ],
 ];

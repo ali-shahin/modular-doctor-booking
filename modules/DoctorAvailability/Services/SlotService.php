@@ -18,6 +18,11 @@ class SlotService implements SlotServiceContract
         ]);
     }
 
+    public function getSlotById(string $slotId): Slot
+    {
+        return $this->slotRepository->find($slotId);
+    }
+
     public function getAllSlots(): Collection
     {
         return $this->slotRepository->all();
