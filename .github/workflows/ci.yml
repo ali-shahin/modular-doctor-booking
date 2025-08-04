@@ -1,0 +1,151 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["*"]
+
+jobs:
+  # -----------------------
+  # 1. Code Quality Checks
+  # -----------------------
+  quality:
+    name: Code Quality Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          extensions: mbstring, pdo, bcmath
+          tools: composer:v2
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.composer/cache
+            vendor
+          key: dependencies-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            dependencies-
+
+      - name: Install dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Run Laravel Pint (Code Style)
+        run: vendor/bin/pint --test
+
+  # -----------------------
+  # 2.   Security Checks
+  # -----------------------
+  security:
+    name: Security Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          extensions: mbstring, pdo, bcmath
+          tools: composer:v2
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.composer/cache
+            vendor
+          key: dependencies-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            dependencies-
+
+      - name: Install dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Run Composer Audit
+        run: composer audit --ignore-severity medium --locked
+
+  # -----------------------
+  # 3. Run Tests (Matrix)
+  # -----------------------
+  tests:
+    name: PHPUnit (Parallel Job ${{ matrix.split }})
+    runs-on: ubuntu-latest
+    needs: [quality, security]
+    strategy:
+      matrix:
+        split: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] # 10 parallel jobs
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          extensions: mbstring, pdo, bcmath, sqlite
+          tools: composer:v2
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.composer/cache
+            vendor
+          key: dependencies-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            dependencies-
+
+      - name: Install dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Install ParaTest
+        run: composer require --dev brianium/paratest
+
+      - name: Prepare Laravel
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          php artisan config:cache
+
+      - name: Split Tests
+        id: split-tests
+        run: |
+          # Find all test files and split them into 10 chunks
+          mkdir -p .test-splits
+          find tests/Unit -name "*Test.php" | sort | split -n l/10 -d - .test-splits/test_
+          echo "TEST_FILES=$(cat .test-splits/test_$(printf '%02d' $(( ${{ matrix.split }} - 1 ))))" >> $GITHUB_ENV
+
+      - name: Run ParaTest (Job ${{ matrix.split }})
+        run: |
+          echo "Running tests for chunk ${{ matrix.split }}"
+          vendor/bin/paratest \
+            --runner=WrapperRunner \
+            --processes=4 \
+            --functional \
+            --colors \
+            --filter=$(echo $TEST_FILES | tr '\n' ',' | sed 's/,$//')
+  # -----------------------
+  # 4. Notifications
+  # -----------------------
+
+#   notifications:
+#     runs-on: ubuntu-latest
+#     needs: [tests]
+#     steps:
+#       - name: Notify Slack
+#         uses: 8398a7/action-slack@v4
+#         with:
+#           status: ${{ job.status }}
+#           fields: repo,commit,author
+#         env:
+#           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+#           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
