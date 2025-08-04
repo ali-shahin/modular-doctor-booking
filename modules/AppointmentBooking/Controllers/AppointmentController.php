@@ -23,6 +23,7 @@ class AppointmentController extends Controller
     {
         // list all available slots for booking
         $appointments = $this->listAvailableSlotsUseCase->execute();
+
         return response()->json($appointments);
     }
 
@@ -34,6 +35,7 @@ class AppointmentController extends Controller
             $request->input('slot_id'),
             $request->input('patient_name')
         );
+
         return response()->json($appointment);
     }
 }

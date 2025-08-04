@@ -2,9 +2,9 @@
 
 namespace Modules\Authentication\Database\Seeders;
 
-use Modules\Authentication\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Modules\Authentication\Models\User;
 
 class UserSeeder extends Seeder
 {

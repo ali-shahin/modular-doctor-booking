@@ -3,11 +3,11 @@
 namespace Modules\AppointmentBooking\UseCases;
 
 use DateTime;
-use Ramsey\Uuid\Uuid;
 use Modules\AppointmentBooking\Entities\Appointment;
-use Modules\AppointmentBooking\Infra\Repositories\AppointmentRepository;
 use Modules\AppointmentBooking\Events\BookingCreated;
+use Modules\AppointmentBooking\Infra\Repositories\AppointmentRepository;
 use Modules\DoctorAvailability\Contracts\SlotServiceContract;
+use Ramsey\Uuid\Uuid;
 
 class BookAppointmentUseCase
 {

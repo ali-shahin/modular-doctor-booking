@@ -2,17 +2,19 @@
 
 namespace Modules\DoctorAvailability\Infra\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Doctor extends Model
 {
     use HasFactory, HasUuids;
 
     protected $table = 'doctors';
+
     public $incrementing = false;
+
     public $timestamps = true;
 
     protected $fillable = [
@@ -28,7 +30,7 @@ class Doctor extends Model
     {
         parent::boot();
         static::creating(function ($model) {
-            if (!$model->id) {
+            if (! $model->id) {
                 $model->id = (string) Str::uuid();
             }
         });

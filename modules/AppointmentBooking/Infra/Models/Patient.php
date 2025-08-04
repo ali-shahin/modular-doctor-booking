@@ -12,6 +12,7 @@ class Patient extends Model
     use HasFactory, HasUuids;
 
     public $incrementing = false;
+
     protected $fillable = [
         'id',
         'name',
@@ -23,7 +24,7 @@ class Patient extends Model
     {
         parent::boot();
         static::creating(function ($model) {
-            if (!$model->id) {
+            if (! $model->id) {
                 $model->id = (string) Str::uuid();
             }
         });

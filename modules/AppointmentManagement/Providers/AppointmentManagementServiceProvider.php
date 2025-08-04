@@ -15,8 +15,8 @@ class AppointmentManagementServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->loadRoutesFrom(__DIR__ . '/../routes.php');
-        $this->loadMigrationsFrom(__DIR__ . '/../Shell/database/migrations');
+        $this->loadRoutesFrom(__DIR__.'/../routes.php');
+        $this->loadMigrationsFrom(__DIR__.'/../Shell/database/migrations');
     }
 
     /**

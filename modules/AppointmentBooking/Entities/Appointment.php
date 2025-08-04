@@ -2,17 +2,20 @@
 
 namespace Modules\AppointmentBooking\Entities;
 
+use DateTime;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-
-use DateTime;
 
 class Appointment
 {
     public UuidInterface $id;
+
     public UuidInterface $slot_id;
+
     public UuidInterface $patient_id;
+
     public string $patient_name;
+
     public datetime $reserved_at;
 
     public function __construct(UuidInterface $slot_id, UuidInterface $patient_id, string $patient_name, DateTime $reserved_at)

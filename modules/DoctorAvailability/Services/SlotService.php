@@ -2,10 +2,10 @@
 
 namespace Modules\DoctorAvailability\Services;
 
-use Modules\DoctorAvailability\Infra\Models\Slot;
-use Modules\DoctorAvailability\Infra\Repositories\SlotRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Modules\DoctorAvailability\Contracts\SlotServiceContract;
+use Modules\DoctorAvailability\Infra\Models\Slot;
+use Modules\DoctorAvailability\Infra\Repositories\SlotRepository;
 
 class SlotService implements SlotServiceContract
 {
@@ -14,7 +14,7 @@ class SlotService implements SlotServiceContract
     public function getAvailableSlots(): Collection
     {
         return $this->slotRepository->findBy([
-            'is_reserved' => false
+            'is_reserved' => false,
         ]);
     }
 
@@ -41,11 +41,12 @@ class SlotService implements SlotServiceContract
     public function updateSlot(string $slotId, array $data): Slot
     {
         $data['id'] = $slotId;
+
         return $this->slotRepository->update($data);
     }
 
     public function deleteSlot(string $slotId): bool
     {
-        return  $this->slotRepository->delete($slotId);
+        return $this->slotRepository->delete($slotId);
     }
 }

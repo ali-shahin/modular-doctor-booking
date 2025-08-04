@@ -9,7 +9,11 @@ class BookingCreated
 {
     use Dispatchable;
 
-    public $time, $doctorEmail, $doctorName;
+    public $time;
+
+    public $doctorEmail;
+
+    public $doctorName;
 
     public function __construct(
         public Appointment $booking,

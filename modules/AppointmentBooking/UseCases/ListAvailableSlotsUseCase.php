@@ -2,8 +2,8 @@
 
 namespace Modules\AppointmentBooking\UseCases;
 
-use Modules\DoctorAvailability\Contracts\SlotServiceContract;
 use Illuminate\Database\Eloquent\Collection;
+use Modules\DoctorAvailability\Contracts\SlotServiceContract;
 
 class ListAvailableSlotsUseCase
 {

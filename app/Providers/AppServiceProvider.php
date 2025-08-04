@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
         $modules = config('module.modules');
 
         foreach ($modules as $module) {
-            $provider = 'Modules\\' . $module . '\Providers\\' . $module . 'ServiceProvider';
+            $provider = 'Modules\\'.$module.'\Providers\\'.$module.'ServiceProvider';
             $this->app->register($provider);
         }
     }

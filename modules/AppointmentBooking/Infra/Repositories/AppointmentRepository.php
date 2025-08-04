@@ -2,8 +2,8 @@
 
 namespace Modules\AppointmentBooking\Infra\Repositories;
 
-use Modules\AppointmentBooking\Infra\Models\Appointment;
 use Modules\AppointmentBooking\Entities\Appointment as AppointmentEntity;
+use Modules\AppointmentBooking\Infra\Models\Appointment;
 use Ramsey\Uuid\Guid\Guid;
 
 class AppointmentRepository
@@ -11,6 +11,7 @@ class AppointmentRepository
     public function all(): array
     {
         $array = Appointment::all()->toArray();
+
         return array_map(function ($appointment) {
             return AppointmentEntity::fromArray($appointment);
         }, $array);

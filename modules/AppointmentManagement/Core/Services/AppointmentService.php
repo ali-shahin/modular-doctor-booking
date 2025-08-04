@@ -2,10 +2,10 @@
 
 namespace Modules\AppointmentManagement\Core\Services;
 
-use Modules\AppointmentManagement\Core\InboundPorts\IAppointmentService;
-use Modules\AppointmentManagement\Core\OutboundPorts\IAppointmentRepository;
 use Modules\AppointmentManagement\Core\Entities\Appointment;
 use Modules\AppointmentManagement\Core\Enums\AppointmentStatusEnum;
+use Modules\AppointmentManagement\Core\InboundPorts\IAppointmentService;
+use Modules\AppointmentManagement\Core\OutboundPorts\IAppointmentRepository;
 
 class AppointmentService implements IAppointmentService
 {

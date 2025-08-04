@@ -2,14 +2,14 @@
 
 namespace Modules\DoctorAvailability\Infra\Repositories;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 class BaseRepository implements RepositoryInterface
 {
     protected Model $model;
 
-    public function all(?string $orderColumn = 'id',  ?string $orderDirection = 'DESC'): Collection
+    public function all(?string $orderColumn = 'id', ?string $orderDirection = 'DESC'): Collection
     {
         $collection = $this->model->orderBy($orderColumn, $orderDirection);
 
@@ -21,7 +21,7 @@ class BaseRepository implements RepositoryInterface
         return $this->model->with($relations)->find($id);
     }
 
-    public function findBy(array $criteria, ?string $orderColumn = 'id',  ?string $orderDirection = 'DESC'): Collection
+    public function findBy(array $criteria, ?string $orderColumn = 'id', ?string $orderDirection = 'DESC'): Collection
     {
         return $this->model
             ->where($criteria)
@@ -41,7 +41,7 @@ class BaseRepository implements RepositoryInterface
 
     public function update(array $data): ?Model
     {
-        if (!isset($data['id'])) {
+        if (! isset($data['id'])) {
             return null;
         }
         $model = $this->find($data['id']);

@@ -2,8 +2,8 @@
 
 namespace Modules\AppointmentManagement\Shell\Repositories;
 
-use Modules\AppointmentManagement\Core\OutboundPorts\IAppointmentRepository;
 use Modules\AppointmentManagement\Core\Entities\Appointment;
+use Modules\AppointmentManagement\Core\OutboundPorts\IAppointmentRepository;
 use Modules\AppointmentManagement\Shell\Models\Appointment as AppointmentModel;
 
 class AppointmentRepository implements IAppointmentRepository
@@ -14,10 +14,11 @@ class AppointmentRepository implements IAppointmentRepository
 
     public function create(Appointment $appointment): ?Appointment
     {
-        $model =  $this->model->create($appointment->toArray());
+        $model = $this->model->create($appointment->toArray());
         if ($model) {
             return Appointment::fromArray($model->toArray());
         }
+
         return null;
     }
 
@@ -26,8 +27,10 @@ class AppointmentRepository implements IAppointmentRepository
         $model = $this->model->where('id', $appointment->id)->first();
         if ($model) {
             $model->update($appointment->toArray());
+
             return Appointment::fromArray($model->toArray());
         }
+
         return null;
     }
 
@@ -42,6 +45,7 @@ class AppointmentRepository implements IAppointmentRepository
         if ($model) {
             return Appointment::fromArray($model->toArray());
         }
+
         return null;
     }
 
@@ -67,6 +71,7 @@ class AppointmentRepository implements IAppointmentRepository
     public function all($collection = null)
     {
         $collection = $collection ?? $this->model->all();
+
         return $collection->map(function ($model) {
             return Appointment::fromArray($model->toArray());
         })->all();
