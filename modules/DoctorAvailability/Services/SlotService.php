@@ -20,7 +20,12 @@ class SlotService implements SlotServiceContract
 
     public function getSlotById(string $slotId): Slot
     {
-        return $this->slotRepository->find($slotId);
+        /** @var \Modules\DoctorAvailability\Infra\Models\Slot $slot */
+        if (! $slot = $this->slotRepository->find($slotId)) {
+            throw new \Exception('Slot not found');
+        }
+
+        return $slot;
     }
 
     public function getAllSlots(): Collection
@@ -30,19 +35,32 @@ class SlotService implements SlotServiceContract
 
     public function addSlot(array $data): Slot
     {
-        return $this->slotRepository->create($data);
+        $slot = $this->slotRepository->create($data);
+        if (! $slot) {
+            throw new \Exception('Failed to create slot');
+        }
+
+        return $slot;
     }
 
     public function getSlot(string $slotId): Slot
     {
-        return $this->slotRepository->find($slotId);
+        $slot = $this->slotRepository->find($slotId);
+        if (! $slot) {
+            throw new \Exception('Slot not found');
+        }
+
+        return $slot;
     }
 
     public function updateSlot(string $slotId, array $data): Slot
     {
-        $data['id'] = $slotId;
+        $result = $this->slotRepository->update(array_merge($data, ['id' => $slotId]));
+        if (! $result) {
+            throw new \Exception('Failed to update slot');
+        }
 
-        return $this->slotRepository->update($data);
+        return $result;
     }
 
     public function deleteSlot(string $slotId): bool

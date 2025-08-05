@@ -9,5 +9,5 @@ interface SlotServiceContract
 {
     public function getAvailableSlots(): Collection;
 
-    public function getSlotById(string $slotId): Model;
+    public function getSlotById(string $slotId): ?Model;
 }

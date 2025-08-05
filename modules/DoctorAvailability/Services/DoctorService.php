@@ -18,21 +18,34 @@ class DoctorService
         return $this->doctorRepository->all();
     }
 
-    public function addDoctor(array $data): ?Doctor
+    public function addDoctor(array $data): Doctor
     {
-        return $this->doctorRepository->create($data);
+        $docker = $this->doctorRepository->create($data);
+        if (! $docker) {
+            throw new \Exception('Failed to create doctor');
+        }
+
+        return $docker;
     }
 
-    public function getDoctor(string $id, $relations = []): ?Doctor
+    public function getDoctor(string $id, $relations = []): Doctor
     {
-        return $this->doctorRepository->find($id, $relations);
+        $docker = $this->doctorRepository->find($id, $relations);
+        if (! $docker) {
+            throw new \Exception('Doctor not found');
+        }
+
+        return $docker;
     }
 
-    public function updateDoctor(string $id, array $data): ?Doctor
+    public function updateDoctor(string $id, array $data): Doctor
     {
-        $data['id'] = $id;
+        $doctor = $this->doctorRepository->update(array_merge($data, ['id' => $id]));
+        if (! $doctor) {
+            throw new \Exception('Failed to update doctor');
+        }
 
-        return $this->doctorRepository->update($data);
+        return $doctor;
     }
 
     public function deleteDoctor(string $id): bool
@@ -40,24 +53,27 @@ class DoctorService
         return $this->doctorRepository->delete($id);
     }
 
-    public function addSlot(string $doctorId, array $data): bool|Slot
+    public function addSlot(string $doctorId, array $data): Slot
     {
-        $doctor = $this->getDoctor($doctorId);
+        $doctor = $this->doctorRepository->find($doctorId);
         if (! $doctor) {
-            return false;
+            throw new \Exception('Doctor not found');
         }
 
         $data['doctor_name'] = $doctor->name;
         $slot = $doctor->slots()->create($data);
+        if (! $slot) {
+            throw new \Exception('Failed to create slot');
+        }
 
-        return $slot ? $slot : false;
+        return $slot;
     }
 
     public function getAvailableSlots(string $doctorId): Collection
     {
-        $doctor = $this->getDoctor($doctorId, ['slots']);
+        $doctor = $this->doctorRepository->find($doctorId, ['slots']);
         if (! $doctor) {
-            return collect([]);
+            return new Collection;
         }
 
         return $doctor->slots->where('is_reserved', false);

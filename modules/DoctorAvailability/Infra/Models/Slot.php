@@ -6,6 +6,14 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
+/**
+ * @property string $id
+ * @property string $time
+ * @property string $doctor_id
+ * @property string $doctor_name
+ * @property bool $is_reserved
+ * @property float $cost
+ */
 class Slot extends Model
 {
     use HasUuids;

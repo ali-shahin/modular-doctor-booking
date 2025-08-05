@@ -3,7 +3,6 @@
 namespace Modules\AppointmentBooking\Events;
 
 use Illuminate\Foundation\Events\Dispatchable;
-use Modules\AppointmentBooking\Infra\Models\Appointment;
 
 class BookingCreated
 {
@@ -15,12 +14,19 @@ class BookingCreated
 
     public $doctorName;
 
+    public $patientEmail;
+
+    public $patientName;
+
     public function __construct(
-        public Appointment $booking,
+        public $booking,
         public $slot
     ) {
         $this->time = $slot->time;
         $this->doctorEmail = $slot->doctor->email;
         $this->doctorName = $slot->doctor->name;
+
+        $this->patientEmail = $booking->patient->email;
+        $this->patientName = $booking->patient->name;
     }
 }

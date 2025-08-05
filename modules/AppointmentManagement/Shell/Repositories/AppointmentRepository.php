@@ -15,11 +15,8 @@ class AppointmentRepository implements IAppointmentRepository
     public function create(Appointment $appointment): ?Appointment
     {
         $model = $this->model->create($appointment->toArray());
-        if ($model) {
-            return Appointment::fromArray($model->toArray());
-        }
 
-        return null;
+        return Appointment::fromArray($model->toArray());
     }
 
     public function update(Appointment $appointment): ?Appointment

@@ -7,6 +7,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
+/**
+ * @property string $id
+ * @property string $name
+ * @property string $specialization
+ * @property string $phone
+ * @property string $email
+ * @property \Illuminate\Database\Eloquent\Collection $slots
+ */
 class Doctor extends Model
 {
     use HasFactory, HasUuids;

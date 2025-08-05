@@ -10,8 +10,8 @@ class NotifyPatient
     public function handle(BookingCreated $event)
     {
 
-        $patientEmail = $event->booking->patient->email;
-        $patientName = $event->booking->patient->name;
+        $patientEmail = $event->patientEmail;
+        $patientName = $event->patientName;
 
         $appointmentDate = $event->time;
 

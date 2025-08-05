@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 
 interface RepositoryInterface
 {
-    public function all();
+    public function all(): Collection;
 
     public function find($id): ?Model;
 

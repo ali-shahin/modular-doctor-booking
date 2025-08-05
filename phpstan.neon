@@ -12,8 +12,9 @@ parameters:
     # Level 10 is the highest level
     level: 5
 
-#    ignoreErrors:
-#        - '#PHPDoc tag @var#'
-#
+    ignoreErrors:
+        - '#PHPDoc tag @var#'
+        - '#^Class Modules\\AppointmentBooking\\Entities\\Appointment constructor invoked with 5 parameters, 4 required\.$#'
+
 #    excludePaths:
 #        - ./*/*/FileToBeExcluded.php

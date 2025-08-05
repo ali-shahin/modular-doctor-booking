@@ -23,9 +23,9 @@ class DoctorController
         return $this->doctorService->getDoctor($id, ['slots']);
     }
 
-    public function slots(string $id): Collection
+    public function getSlots(string $id): Collection
     {
-        return $this->doctorService->getDoctor($id)->slots;
+        return $this->doctorService->getDoctor($id)->slots()->get();
     }
 
     public function addSlot(Request $request, string $id)
